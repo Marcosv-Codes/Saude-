@@ -1,6 +1,7 @@
 package com.projetoPablo;
 
 public class Paciente extends Pessoa{
+    // ATRIBUTOS
     private String email;
     private String senha;
     private String prioridade; // VERDE, AMARELA, VERMELHA

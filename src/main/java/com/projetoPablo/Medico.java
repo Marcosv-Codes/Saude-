@@ -2,12 +2,12 @@ package com.projetoPablo;
 
 public class Medico extends Funcionario{
     // ATRIBUTOS
-    private String areaTrabalho;
+    private String areaTrabalho; // VERDE, AMARELO, VERMELHO
 
     // CONSTRUTOR
     public Medico(String nome, String cpf, String dataNascimento, String matricula, String senha, UPA upaAlocado, String areaTrabalho) {
         super(nome, cpf, dataNascimento, matricula, senha, upaAlocado);
-        this.areaTrabalho = areaTrabalho; //
+        this.areaTrabalho = areaTrabalho;
     }
 
     // GETTERS E SETTERS

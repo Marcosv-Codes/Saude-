@@ -28,8 +28,6 @@ public abstract class Funcionario extends Pessoa {
     }
 
     // CONSTRUTOR
-
-
     public Funcionario(String nome, String cpf, String dataNascimento, String matricula, String senha, UPA upaAlocado) {
         super(nome, cpf, dataNascimento);
         this.matricula = matricula;
@@ -48,6 +46,8 @@ public abstract class Funcionario extends Pessoa {
 
     // MÉTODOS
     public boolean autenticar(String senha) {
+
+        // FALTA TESTAR
         if (senha == null || this.senha == null) {
             return false;
         }

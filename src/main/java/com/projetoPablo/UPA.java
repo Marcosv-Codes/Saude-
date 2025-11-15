@@ -12,7 +12,6 @@ public class UPA {
     private ArrayList<Paciente> filaVermelha;
 
     // GETTERS E SETTERS
-
     public String getNome() {
         return nome;
     }
@@ -52,8 +51,6 @@ public class UPA {
     public void setFilaVermelha(ArrayList<Paciente> filaVermelha) {
         this.filaVermelha = filaVermelha;
     }
-
-
 
     // CONSTRUTOR
     public UPA(String nome, String endereco) {
