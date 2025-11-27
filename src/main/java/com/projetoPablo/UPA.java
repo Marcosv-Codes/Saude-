@@ -77,11 +77,9 @@ public class UPA {
     public void adicionarPacienteFila(Paciente paciente) {
         // SEM LOGICA
     }
-    public void adicionarPacienteFilaEmArea(Paciente paciente, String area) {
-        // SEM LOGICA
-    }
 
-    public Paciente chamarProximo(String area) {
+
+    public Paciente chamarProximo(Prioridade prioridade) {
         return null; // SEM LOGICA
     }
 

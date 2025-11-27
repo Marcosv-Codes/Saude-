@@ -45,21 +45,20 @@ public abstract class Funcionario extends Pessoa {
     }
 
     // MÉTODOS
-    public boolean autenticar(String senha) {
+    public boolean autenticar(String matricula, String senha) {
 
-        // FALTA TESTAR
-        if (senha == null || this.senha == null) {
+        if (matricula == null || senha == null || this.matricula == null || this.senha == null) {
             return false;
         }
         // COMPARA A MATRÍCULA E SENHA INSERIDAS:
-        boolean matriculalCorreta = this.matricula.equals(matricula);
+        boolean matriculaCorreta = this.matricula.equals(matricula);
         boolean senhaCorreta = this.senha.equals(senha);
-        boolean autenticadoComSucesso = matriculalCorreta && senhaCorreta;
+        boolean autenticadoComSucesso = matriculaCorreta && senhaCorreta;
 
-        if(autenticadoComSucesso) {
-            System.out.println("Funcionário autenticado com sucesso!");
+        if (autenticadoComSucesso) {
+            System.out.println("Funcionário(a) " + getNome() + " autenticado(a) com sucesso!");
         } else {
-            System.out.println("Autentição falhou! Matrícula ou senha incorretos!");
+            System.out.println("Autenticação falhou! Matrícula ou senha incorretos!");
         }
 
         return autenticadoComSucesso;
