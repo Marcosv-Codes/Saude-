@@ -2,6 +2,12 @@ package com.projetoPablo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class UPA {
     // ATRIBUTOS
@@ -10,6 +16,8 @@ public class UPA {
     private ArrayList<Paciente> filaVerde;
     private ArrayList<Paciente> filaAmarela;
     private ArrayList<Paciente> filaVermelha;
+
+    private static final String ARQUIVO_PACIENTES = "pacientes.txt";
 
     // GETTERS E SETTERS
     public String getNome() {
@@ -169,5 +177,62 @@ public class UPA {
 
     public int posicaoNaFila(Paciente paciente) {
         return 0; // SEM LOGICA
+    }
+
+// salva pacientes em txt
+    public void salvarPacientesEmArquivo() {
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(ARQUIVO_PACIENTES)))) {
+
+            if (filaVerde != null) {
+                for (Paciente p : filaVerde) {
+                    pw.println(p.toCSV());
+                }
+            }
+
+            if (filaAmarela != null) {
+                for (Paciente p : filaAmarela) {
+                    pw.println(p.toCSV());
+                }
+            }
+
+            if (filaVermelha != null) {
+                for (Paciente p : filaVermelha) {
+                    pw.println(p.toCSV());
+                }
+            }
+
+            System.out.println("💾 Pacientes salvos em " + ARQUIVO_PACIENTES);
+
+        } catch (IOException e) {
+            System.out.println("❌ Erro ao salvar pacientes no arquivo: " + e.getMessage());
+        }
+    }
+
+    //carregar pacientes txt
+    public void carregarPacientesDoArquivo() {
+
+        // reinicia as filas
+        filaVerde = new ArrayList<>();
+        filaAmarela = new ArrayList<>();
+        filaVermelha = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(ARQUIVO_PACIENTES))) {
+
+            String linha;
+
+            while ((linha = br.readLine()) != null) {
+                Paciente p = Paciente.fromCSV(linha);
+
+                if (p != null) {
+                    adicionarPacienteFila(p); // já joga na fila certa
+                }
+            }
+
+            System.out.println("📂 Pacientes carregados de " + ARQUIVO_PACIENTES);
+
+        } catch (IOException e) {
+            // na primeira vez é normal o arquivo não existir, pq pode nao ter salvo ninguem ainda
+            System.out.println("ℹ️ Nenhum paciente carregado (arquivo pode não existir ainda). Detalhes: " + e.getMessage());
+        }
     }
 }

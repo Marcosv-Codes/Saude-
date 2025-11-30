@@ -48,7 +48,7 @@ public class Atendente extends Funcionario {
         // chama a lógica da UPA para inserir na fila correta
         upa.adicionarPacienteFila(paciente);
 
-        // print simples do atendente confirmando
+        // print simples do atendente confirmando.
         System.out.println("📞 O Atendente " + getNome() + " adicionou o(a) paciente "
                 + paciente.getNome() + " na fila " + paciente.getPrioridade()
                 + " da UPA " + upa.getNome());

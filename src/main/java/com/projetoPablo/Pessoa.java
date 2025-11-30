@@ -1,7 +1,7 @@
 package com.projetoPablo;
 
 public abstract class Pessoa {
-    // ATRIBUTOS
+    // ATRIBUTOS.
     private String nome;
     private String cpf;
     private String dataNascimento;

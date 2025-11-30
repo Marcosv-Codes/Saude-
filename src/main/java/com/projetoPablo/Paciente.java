@@ -76,6 +76,61 @@ public class Paciente extends Pessoa{
         return logouComSucesso;
     }
 
+
+    // transforma o paciente em uma linha de texto para salvar no arquivo
+    public String toCSV() {
+        String prioridadeStr = (prioridade != null) ? prioridade.name() : "";
+        String chegadaStr = (chegadaFilaTimestamp != null) ? chegadaFilaTimestamp : "";
+
+        return String.join(",",
+                getNome(),              // vem de Pessoa
+                getCpf(),               // vem de Pessoa
+                getDataNascimento(),    // vem de Pessoa
+                email,
+                senha,
+                prioridadeStr,
+                chegadaStr
+        );
+    }
+
+    // recria um paciente
+    public static Paciente fromCSV(String linha) {
+        if (linha == null || linha.isEmpty()) {
+            return null;
+        }
+
+        String[] partes = linha.split(",");
+
+        // nome, cpf, dataNascimento, email, senha, prioridade, chegada
+        if (partes.length < 7) {
+            return null;
+        }
+
+        String nome = partes[0];
+        String cpf = partes[1];
+        String dataNascimento = partes[2];
+        String email = partes[3];
+        String senha = partes[4];
+        String prioridadeStr = partes[5];
+        String chegada = partes[6];
+
+        Prioridade prioridade = null;
+        if (!prioridadeStr.isEmpty()) {
+            try {
+                prioridade = Prioridade.valueOf(prioridadeStr);
+            } catch (IllegalArgumentException e) {
+                prioridade = null; // se vier prioridade inválida, deixa null
+            }
+        }
+
+        // usa o MESMO construtor que já existe hoje:
+        Paciente p = new Paciente(nome, cpf, dataNascimento, email, senha, chegada);
+        p.setPrioridade(prioridade);
+
+        return p;
+    }
+
+
     public double verTempoEspera(){
         double tempoEspera = 0.0;
         return tempoEspera; // FALTA A LOGICA

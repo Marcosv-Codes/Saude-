@@ -19,7 +19,7 @@ public class Medico extends Funcionario{
         this.areaTrabalho = areaTrabalho;
     }
 
-    // MÉTODOS
+    // MÉTODOS.
     public void atenderPaciente(Paciente paciente) {
         if (paciente == null) {
             System.out.println("⚠️ Não é possível atender: paciente inválido.");

@@ -44,7 +44,7 @@ public abstract class Funcionario extends Pessoa {
                 "} " + super.toString();
     }
 
-    // MÉTODOS
+    // MÉTODOS.
     public boolean autenticar(String matricula, String senha) {
 
         if (matricula == null || senha == null || this.matricula == null || this.senha == null) {
