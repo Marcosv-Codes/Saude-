@@ -1,25 +1,22 @@
 package com.projetoPablo;
 
-public class Paciente extends Pessoa{
-    // ATRIBUTOS
+public class Paciente extends Pessoa {
+
     private String email;
     private String senha;
-    private Prioridade prioridade; // VERDE, AMARELA, VERMELHA
-    private String chegadaFilaTimestamp;
+    private Prioridade prioridade;
+    private String horarioChegada;
 
-    // GETTERS E SETTERS
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
+    public Paciente(String nome, String cpf, String dataNascimento,
+                    String email, String senha, Prioridade prioridade,
+                    String horarioChegada) {
+        super(nome, cpf, dataNascimento);
         this.email = email;
-    }
-    public String getSenha() {
-        return senha;
-    }
-    public void setSenha(String senha) {
         this.senha = senha;
+        this.prioridade = prioridade;
+        this.horarioChegada = horarioChegada;
     }
+
     public Prioridade getPrioridade() {
         return prioridade;
     }
@@ -27,112 +24,87 @@ public class Paciente extends Pessoa{
     public void setPrioridade(Prioridade prioridade) {
         this.prioridade = prioridade;
     }
-    public String getChegadaFilaTimestamp() {
-        return chegadaFilaTimestamp;
-    }
-    public void setChegadaFilaTimestamp(String chegadaFilaTimestamp) {
-        this.chegadaFilaTimestamp = chegadaFilaTimestamp;
+
+    public String getEmail() {
+        return email;
     }
 
-    // CONSTRUTOR
-    public Paciente(String nome, String cpf, String dataNascimento, String email, String senha, String chegadaFilaTimestamp) {
-        super(nome, cpf, dataNascimento);
-        this.email = email;
-        this.senha = senha;
-        this.chegadaFilaTimestamp = chegadaFilaTimestamp;
-        this.prioridade = null; // inicia sem prioridade, definida na triagem
+    public String getHorarioChegada() {
+        return horarioChegada;
     }
 
-    // TO-STRING
-    @Override
-    public String toString() {
-        return "Paciente{" +
-                "email='" + email + '\'' +
-                ", senha='" + senha + '\'' +
-                ", prioridade='" + prioridade + '\'' +
-                ", chegadaFilaTimestamp='" + chegadaFilaTimestamp + '\'' +
-                "} " + super.toString();
+    // Login simples, só pra testar
+    public boolean login(String email, String senha) {
+        boolean ok = this.email.equals(email) && this.senha.equals(senha);
+        System.out.println(ok ? "Login de paciente OK" : "Login de paciente FALHOU");
+        return ok;
     }
 
-    // MÉTODOS
-    public boolean login(String email, String senha){
-        // VERIFICA VALORES NULOS
-        if(email == null || this.email == null || senha == null || this.senha == null){
-            return false;
-        }
+    // =============== ARQUIVOS ===============
 
-        // COMPARA O E-MAIL E SENHA INSERIDOS:
-        boolean emailCorreto = this.email.equals(email);
-        boolean senhaCorreta = this.senha.equals(senha);
-        boolean logouComSucesso = emailCorreto && senhaCorreta;
-
-        if(logouComSucesso) {
-            System.out.println("Verificando email e senha...");
-            System.out.println(getNome() + " Logado com sucesso!");
-        } else {
-            System.out.println("Login falhou! E-mail ou senha incorretos!");
-        }
-
-        return logouComSucesso;
-    }
-
-
-    // transforma o paciente em uma linha de texto para salvar no arquivo
     public String toCSV() {
-        String prioridadeStr = (prioridade != null) ? prioridade.name() : "";
-        String chegadaStr = (chegadaFilaTimestamp != null) ? chegadaFilaTimestamp : "";
-
-        return String.join(",",
-                getNome(),              // vem de Pessoa
-                getCpf(),               // vem de Pessoa
-                getDataNascimento(),    // vem de Pessoa
+        // nome,cpf,dataNasc,email,senha,prioridade,horario
+        return String.join(";",
+                nome,
+                cpf,
+                dataNascimento,
                 email,
                 senha,
-                prioridadeStr,
-                chegadaStr
+                prioridade != null ? prioridade.name() : "",
+                horarioChegada != null ? horarioChegada : ""
         );
     }
 
-    // recria um paciente
-    public static Paciente fromCSV(String linha) {
+    public static Paciente fromCSV(String linha) throws PacienteInvalidoExpeption {
         if (linha == null || linha.isEmpty()) {
-            return null;
+            throw new PacienteInvalidoExpeption("Linha vazia ao ler paciente.");
         }
 
-        String[] partes = linha.split(",");
-
-        // nome, cpf, dataNascimento, email, senha, prioridade, chegada
+        String[] partes = linha.split(";");
         if (partes.length < 7) {
-            return null;
+            throw new PacienteInvalidoExpeption("Dados incompletos de paciente: " + linha);
         }
 
         String nome = partes[0];
         String cpf = partes[1];
-        String dataNascimento = partes[2];
+        String dataNasc = partes[2];
         String email = partes[3];
         String senha = partes[4];
         String prioridadeStr = partes[5];
-        String chegada = partes[6];
+        String horario = partes[6];
 
         Prioridade prioridade = null;
         if (!prioridadeStr.isEmpty()) {
             try {
                 prioridade = Prioridade.valueOf(prioridadeStr);
             } catch (IllegalArgumentException e) {
-                prioridade = null; // se vier prioridade inválida, deixa null
+                throw new PacienteInvalidoExpeption("Prioridade inválida ao ler paciente: " + prioridadeStr);
             }
         }
 
-        // usa o MESMO construtor que já existe hoje:
-        Paciente p = new Paciente(nome, cpf, dataNascimento, email, senha, chegada);
-        p.setPrioridade(prioridade);
-
-        return p;
+        return new Paciente(nome, cpf, dataNasc, email, senha, prioridade, horario);
     }
 
+    @Override
+    public String toString() {
+        return "Paciente{" +
+                "nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", prioridade=" + prioridade +
+                '}';
+    }
 
-    public double verTempoEspera(){
-        double tempoEspera = 0.0;
-        return tempoEspera; // FALTA A LOGICA
+    // Para funcionar corretamente com List.remove(paciente)
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Paciente)) return false;
+        Paciente p = (Paciente) o;
+        return this.cpf != null && this.cpf.equals(p.cpf);
+    }
+
+    @Override
+    public int hashCode() {
+        return cpf != null ? cpf.hashCode() : 0;
     }
 }

@@ -10,7 +10,7 @@ public class Atendente extends Funcionario {
     public void cadastrarPaciente(Paciente paciente) {
         if (paciente == null) {
             System.out.println("⚠️ Não é possível cadastrar: paciente inválido.");
-            return;
+
         }
 
         if (paciente.getPrioridade() == null) {
@@ -30,27 +30,20 @@ public class Atendente extends Funcionario {
     }
 
     public void adicionarFila(Paciente paciente, UPA upa) {
-        if (paciente == null) {
-            System.out.println("⚠️ Paciente não cadastrado.");
-            return;
-        }
-
         if (upa == null) {
             System.out.println("⚠️ UPA inválida.");
             return;
         }
+        try {
+            // chama a lógica da UPA para inserir na fila correta
+            upa.adicionarPacienteFila(paciente);
 
-        if (paciente.getPrioridade() == null) {
-            System.out.println("⚠️ O paciente " + paciente.getNome() + " ainda não passou pela triagem.");
-            return;
+            // print simples do atendente confirmando
+            System.out.println("📞 O Atendente " + getNome() + " adicionou o(a) paciente "
+                    + paciente.getNome() + " na fila " + paciente.getPrioridade()
+                    + " da UPA " + upa.getNome());
+        } catch (PacienteInvalidoExpeption erro) {
+            System.out.println(erro.getMessage());
         }
-
-        // chama a lógica da UPA para inserir na fila correta
-        upa.adicionarPacienteFila(paciente);
-
-        // print simples do atendente confirmando.
-        System.out.println("📞 O Atendente " + getNome() + " adicionou o(a) paciente "
-                + paciente.getNome() + " na fila " + paciente.getPrioridade()
-                + " da UPA " + upa.getNome());
     }
 }
