@@ -53,14 +53,14 @@ public class Main {
         enfermeiro.triarPaciente(p2, Prioridade.VERMELHA);
         atendente.adicionarFila(p2, upa1);
         System.out.println(upa1.getFilaVermelha());
-        try{
+       try{
             medico.atenderPaciente(null);
-        } catch (PacienteInvalidoExpeption erro) {
-            System.out.println(erro.getMessage());
-        }
+       } catch (PacienteInvalidoExpeption erro) {
+           System.out.println(erro.getMessage());
+       }
 
         //TESTE PARA FINALIZAR ATENDIMENTO NA ENFERMARIA
-        enfermeiro.finalizarAtendimento(p1);
+        //enfermeiro.finalizarAtendimento(p1);
 
         // 1) SALVA todos os pacientes das filas em um arquivo .txt
         upa1.salvarPacientesEmArquivo();
