@@ -26,31 +26,31 @@ public class Main {
         atendente.autenticar("1234", "12345");
 
         // LOGIN DE PACIENTES
-        //p1.login("saude1+@gmail.com",  "saude+1");
+        p1.login("saude1+@gmail.com",  "saude+1");
         p2.login("paulo@gmail.com","saude1234");
 
         // TRIAGEM DE PACIENTES PELO ENFERMEIRO
-        //enfermeiro.triarPaciente(p1, Prioridade.VERDE);
+        enfermeiro.triarPaciente(p1, Prioridade.VERDE);
 
 
         // CADASTRO DE PACIENTES PELO ATENDENTE
-        //atendente.cadastrarPaciente(p1);
+        atendente.cadastrarPaciente(p1);
 
         // PACIENTES ADICIONADOS NA FILA PELO ATENDENTE
-        // atendente.adicionarFila(p1, upa1);
+        atendente.adicionarFila(p1, upa1);
 
 
         // TESTE
-        //System.out.println(upa1.getFilaVerde());
-        //enfermeiro.encaminharParaMedico(p1);
-        // medico.atenderPaciente(p1);
-        //medico.encaminharParaEnfermaria(p1);
-        // enfermeiro.finalizarAtendimento(p1);
+        System.out.println(upa1.getFilaVerde());
+        enfermeiro.encaminharParaMedico(p1);
+        medico.atenderPaciente(p1);
+        medico.encaminharParaEnfermaria(p1);
+        enfermeiro.finalizarAtendimento(p1);
 
         //System.out.println(upa1.getFilaVerde());
 
         // TESTE try catch
-        //enfermeiro.triarPaciente(p2, Prioridade.VERMELHA);
+        enfermeiro.triarPaciente(p2, Prioridade.VERMELHA);
         atendente.adicionarFila(p2, upa1);
         System.out.println(upa1.getFilaVermelha());
         try{
@@ -59,16 +59,28 @@ public class Main {
             System.out.println(erro.getMessage());
         }
 
-
-
-
-
-
-
-
-
         //TESTE PARA FINALIZAR ATENDIMENTO NA ENFERMARIA
-        //enfermeiro.finalizarAtendimento(p1);
+        enfermeiro.finalizarAtendimento(p1);
 
+        // 1) SALVA todos os pacientes das filas em um arquivo .txt
+        upa1.salvarPacientesEmArquivo();
+
+        // 2) LIMPA as filas apenas para testar o carregamento
+        upa1.getFilaVerde().clear();
+        upa1.getFilaAmarela().clear();
+        upa1.getFilaVermelha().clear();
+
+        System.out.println("Filas após limpar manualmente:");
+        System.out.println("VERDE   -> " + upa1.getFilaVerde());
+        System.out.println("AMARELA -> " + upa1.getFilaAmarela());
+        System.out.println("VERMELHA-> " + upa1.getFilaVermelha());
+
+        // 3) CARREGA novamente os pacientes do arquivo
+        upa1.carregarPacientesDoArquivo();
+
+        System.out.println("Filas após carregar do arquivo:");
+        System.out.println("VERDE   -> " + upa1.getFilaVerde());
+        System.out.println("AMARELA -> " + upa1.getFilaAmarela());
+        System.out.println("VERMELHA-> " + upa1.getFilaVermelha());
     }
 }

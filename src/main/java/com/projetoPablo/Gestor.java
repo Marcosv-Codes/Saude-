@@ -6,7 +6,7 @@ public class Gestor extends Funcionario{
         super(nome, cpf, dataNascimento, matricula, senha, upaAlocado);
     }
 
-    // MÉTODOS.
+    // MÉTODOS
     public void cadastrarUPA(UPA upa) {
         // SEM LOGICA
     }

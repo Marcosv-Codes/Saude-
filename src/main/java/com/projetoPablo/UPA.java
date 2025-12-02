@@ -1,7 +1,7 @@
 package com.projetoPablo;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
 
 public class UPA {
     // ATRIBUTOS
@@ -10,6 +10,9 @@ public class UPA {
     private ArrayList<Paciente> filaVerde;
     private ArrayList<Paciente> filaAmarela;
     private ArrayList<Paciente> filaVermelha;
+
+    // ARQUIVO DE PACIENTES (SUA PARTE)
+    private static final String ARQUIVO_PACIENTES = "pacientes.txt";
 
     // GETTERS E SETTERS
     public String getNome() {
@@ -73,7 +76,7 @@ public class UPA {
                 '}';
     }
 
-    // MÉTODOS
+    // MÉTODOS DO GRUPO (NÃO MEXI)
     public void adicionarPacienteFila(Paciente paciente) {
         if (paciente == null) {
             throw new PacienteInvalidoExpeption("Usuário Inválido");
@@ -94,8 +97,6 @@ public class UPA {
                 filaVermelha.add(paciente);
                 break;
         }
-
-        //System.out.println("✅ Paciente " + paciente.getNome() + " entrou na fila " + paciente.getPrioridade() + " da UPA " + this.nome);
     }
 
     public Paciente chamarProximo(Prioridade prioridade) {
@@ -113,7 +114,6 @@ public class UPA {
 
         boolean removido = false;
 
-        // Comparar usando CPF em cada fila
         if (filaVerde != null) {
             for (int i = 0; i < filaVerde.size(); i++) {
                 if (filaVerde.get(i).getCpf().equals(paciente.getCpf())) {
@@ -167,5 +167,56 @@ public class UPA {
 
     public int posicaoNaFila(Paciente paciente) {
         return 0; // SEM LOGICA
+    }
+
+    // ======================================================
+    // SALVA todos os pacientes das filas em um arquivo .txt
+    // ======================================================
+    public void salvarPacientesEmArquivo() {
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(ARQUIVO_PACIENTES)))) {
+
+            for (Paciente p : filaVerde) {
+                pw.println(p.toCSV());
+            }
+            for (Paciente p : filaAmarela) {
+                pw.println(p.toCSV());
+            }
+            for (Paciente p : filaVermelha) {
+                pw.println(p.toCSV());
+            }
+
+            System.out.println("💾 Pacientes salvos em " + ARQUIVO_PACIENTES);
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar pacientes: " + e.getMessage());
+        }
+    }
+
+    // ======================================================
+    // CARREGA pacientes do arquivo e recoloca nas filas
+    // ======================================================
+    public void carregarPacientesDoArquivo() {
+        filaVerde.clear();
+        filaAmarela.clear();
+        filaVermelha.clear();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(ARQUIVO_PACIENTES))) {
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                try {
+                    Paciente p = Paciente.fromCSV(linha);
+                    adicionarPacienteFila(p);
+                } catch (PacienteInvalidoExpeption e) {
+                    System.out.println("⚠️ Erro ao ler paciente do arquivo: " + e.getMessage());
+                }
+            }
+
+            System.out.println("📂 Pacientes carregados de " + ARQUIVO_PACIENTES);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Nenhum arquivo de pacientes encontrado (primeira execução).");
+        } catch (IOException e) {
+            System.out.println("Erro ao ler arquivo de pacientes: " + e.getMessage());
+        }
     }
 }

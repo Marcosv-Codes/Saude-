@@ -42,4 +42,5 @@ public abstract class Pessoa {
                 ", dataNascimento='" + dataNascimento + '\'' +
                 '}';
     }
+
 }

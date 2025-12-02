@@ -82,4 +82,5 @@ public class Medico extends Funcionario{
         System.out.println("📃 Status: Alta registrada pelo(a) médico(a) " + getNome() + " ✅");
         System.out.println("======================================================================");
     }
+
 }

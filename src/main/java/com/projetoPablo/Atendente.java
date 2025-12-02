@@ -46,4 +46,5 @@ public class Atendente extends Funcionario {
             System.out.println(erro.getMessage());
         }
     }
+
 }

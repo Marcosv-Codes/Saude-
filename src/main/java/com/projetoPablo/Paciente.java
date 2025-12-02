@@ -7,6 +7,13 @@ public class Paciente extends Pessoa {
     private Prioridade prioridade;
     private String horarioChegada;
 
+    // CONSTRUTOR USADO PELO SEU GRUPO (SEM PRIORIDADE)
+    public Paciente(String nome, String cpf, String dataNascimento,
+                    String email, String senha, String horarioChegada) {
+        this(nome, cpf, dataNascimento, email, senha, null, horarioChegada);
+    }
+
+    // CONSTRUTOR COMPLETO (COM PRIORIDADE) - pode ser usado no futuro
     public Paciente(String nome, String cpf, String dataNascimento,
                     String email, String senha, Prioridade prioridade,
                     String horarioChegada) {
@@ -33,6 +40,12 @@ public class Paciente extends Pessoa {
         return horarioChegada;
     }
 
+    // >>> ESTE MÉTODO É SÓ PRA NÃO DAR ERRO NO ATENDENTE <<<
+    // (ele chama getChegadaFilaTimestamp, então a gente fornece)
+    public String getChegadaFilaTimestamp() {
+        return horarioChegada;
+    }
+
     // Login simples, só pra testar
     public boolean login(String email, String senha) {
         boolean ok = this.email.equals(email) && this.senha.equals(senha);
@@ -42,12 +55,13 @@ public class Paciente extends Pessoa {
 
     // =============== ARQUIVOS ===============
 
+    // Transforma o paciente em uma linha de texto (CSV)
     public String toCSV() {
-        // nome,cpf,dataNasc,email,senha,prioridade,horario
+        // nome;cpf;dataNasc;email;senha;prioridade;horario
         return String.join(";",
-                nome,
-                cpf,
-                dataNascimento,
+                getNome(),
+                getCpf(),
+                getDataNascimento(),
                 email,
                 senha,
                 prioridade != null ? prioridade.name() : "",
@@ -55,6 +69,7 @@ public class Paciente extends Pessoa {
         );
     }
 
+    // Reconstrói o paciente a partir de uma linha de texto
     public static Paciente fromCSV(String linha) throws PacienteInvalidoExpeption {
         if (linha == null || linha.isEmpty()) {
             throw new PacienteInvalidoExpeption("Linha vazia ao ler paciente.");
@@ -88,8 +103,8 @@ public class Paciente extends Pessoa {
     @Override
     public String toString() {
         return "Paciente{" +
-                "nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
+                "nome='" + getNome() + '\'' +
+                ", cpf='" + getCpf() + '\'' +
                 ", prioridade=" + prioridade +
                 '}';
     }
@@ -100,11 +115,11 @@ public class Paciente extends Pessoa {
         if (this == o) return true;
         if (!(o instanceof Paciente)) return false;
         Paciente p = (Paciente) o;
-        return this.cpf != null && this.cpf.equals(p.cpf);
+        return this.getCpf() != null && this.getCpf().equals(p.getCpf());
     }
 
     @Override
     public int hashCode() {
-        return cpf != null ? cpf.hashCode() : 0;
+        return getCpf() != null ? getCpf().hashCode() : 0;
     }
 }
