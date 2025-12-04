@@ -70,14 +70,14 @@ public class Paciente extends Pessoa {
     }
 
     // Reconstrói o paciente a partir de uma linha de texto
-    public static Paciente fromCSV(String linha) throws PacienteInvalidoExpeption {
+    public static Paciente fromCSV(String linha) throws PacienteInvalidoException {
         if (linha == null || linha.isEmpty()) {
-            throw new PacienteInvalidoExpeption("Linha vazia ao ler paciente.");
+            throw new PacienteInvalidoException("Linha vazia ao ler paciente.");
         }
 
         String[] partes = linha.split(";");
         if (partes.length < 7) {
-            throw new PacienteInvalidoExpeption("Dados incompletos de paciente: " + linha);
+            throw new PacienteInvalidoException("Dados incompletos de paciente: " + linha);
         }
 
         String nome = partes[0];
@@ -93,7 +93,7 @@ public class Paciente extends Pessoa {
             try {
                 prioridade = Prioridade.valueOf(prioridadeStr);
             } catch (IllegalArgumentException e) {
-                throw new PacienteInvalidoExpeption("Prioridade inválida ao ler paciente: " + prioridadeStr);
+                throw new PacienteInvalidoException("Prioridade inválida ao ler paciente: " + prioridadeStr);
             }
         }
 

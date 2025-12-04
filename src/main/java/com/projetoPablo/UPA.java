@@ -77,13 +77,13 @@ public class UPA {
     }
 
     // MÉTODOS DO GRUPO (NÃO MEXI)
-    public void adicionarPacienteFila(Paciente paciente) {
+    public void adicionarPacienteFila(Paciente paciente) throws PacienteInvalidoException {
         if (paciente == null) {
-            throw new PacienteInvalidoExpeption("Usuário Inválido");
+            throw new PacienteInvalidoException("Usuário Inválido");
         }
 
         if (paciente.getPrioridade() == null) {
-            throw new PacienteInvalidoExpeption("⚠️ O paciente " + paciente.getNome() + " ainda não passou pela triagem!");
+            throw new PacienteInvalidoException("⚠️ O paciente " + paciente.getNome() + " ainda não passou pela triagem!");
         }
 
         switch (paciente.getPrioridade()) {
@@ -169,9 +169,7 @@ public class UPA {
         return 0; // SEM LOGICA
     }
 
-    // ======================================================
     // SALVA todos os pacientes das filas em um arquivo .txt
-    // ======================================================
     public void salvarPacientesEmArquivo() {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(ARQUIVO_PACIENTES)))) {
 
@@ -191,9 +189,7 @@ public class UPA {
         }
     }
 
-    // ======================================================
     // CARREGA pacientes do arquivo e recoloca nas filas
-    // ======================================================
     public void carregarPacientesDoArquivo() {
         filaVerde.clear();
         filaAmarela.clear();
@@ -206,7 +202,7 @@ public class UPA {
                 try {
                     Paciente p = Paciente.fromCSV(linha);
                     adicionarPacienteFila(p);
-                } catch (PacienteInvalidoExpeption e) {
+                } catch (PacienteInvalidoException e) {
                     System.out.println("⚠️ Erro ao ler paciente do arquivo: " + e.getMessage());
                 }
             }

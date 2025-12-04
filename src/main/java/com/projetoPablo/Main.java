@@ -37,7 +37,7 @@ public class Main {
         atendente.cadastrarPaciente(p1);
 
         // PACIENTES ADICIONADOS NA FILA PELO ATENDENTE
-        atendente.adicionarFila(p1, upa1);
+        //atendente.adicionarFila(null, upa1);
 
 
         // TESTE
@@ -52,28 +52,18 @@ public class Main {
         // TESTE try catch
         enfermeiro.triarPaciente(p2, Prioridade.VERMELHA);
         atendente.adicionarFila(p2, upa1);
-        System.out.println(upa1.getFilaVermelha());
-       try{
-            medico.atenderPaciente(null);
-       } catch (PacienteInvalidoExpeption erro) {
-           System.out.println(erro.getMessage());
-       }
+
 
         //TESTE PARA FINALIZAR ATENDIMENTO NA ENFERMARIA
-        //enfermeiro.finalizarAtendimento(p1);
+        enfermeiro.finalizarAtendimento(p1);
 
         // 1) SALVA todos os pacientes das filas em um arquivo .txt
         upa1.salvarPacientesEmArquivo();
 
-        // 2) LIMPA as filas apenas para testar o carregamento
+        // 2) LIMPA as filas só para testar o carregamento
         upa1.getFilaVerde().clear();
         upa1.getFilaAmarela().clear();
         upa1.getFilaVermelha().clear();
-
-        System.out.println("Filas após limpar manualmente:");
-        System.out.println("VERDE   -> " + upa1.getFilaVerde());
-        System.out.println("AMARELA -> " + upa1.getFilaAmarela());
-        System.out.println("VERMELHA-> " + upa1.getFilaVermelha());
 
         // 3) CARREGA novamente os pacientes do arquivo
         upa1.carregarPacientesDoArquivo();

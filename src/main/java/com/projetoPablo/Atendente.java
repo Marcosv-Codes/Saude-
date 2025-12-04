@@ -42,7 +42,7 @@ public class Atendente extends Funcionario {
             System.out.println("📞 O Atendente " + getNome() + " adicionou o(a) paciente "
                     + paciente.getNome() + " na fila " + paciente.getPrioridade()
                     + " da UPA " + upa.getNome());
-        } catch (PacienteInvalidoExpeption erro) {
+        } catch (PacienteInvalidoException erro) {
             System.out.println(erro.getMessage());
         }
     }
